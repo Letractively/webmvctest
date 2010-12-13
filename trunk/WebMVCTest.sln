@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMVCTest", "WebMVCTest\WebMVCTest.csproj", "{32FA6825-D98F-4D97-BBA8-DCB0B9B215BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMVCTest.XML", "WebMVCTest.XML\WebMVCTest.XML.csproj", "{600C9081-E594-45D6-AA32-A63FB58FB6B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMVCTest.Model", "WebMVCTest.Model\WebMVCTest.Model.csproj", "{5891464A-7A7C-466F-A07B-86C7CAAA8250}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMVCTest.Engine", "WebMVCTest.Engine\WebMVCTest.Engine.csproj", "{AB1264E3-251B-4412-8D08-41E3B593EF59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMVCTest.Report", "WebMVCTest.Report\WebMVCTest.Report.csproj", "{88635471-7A38-4928-B188-C28DC9ABF979}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{32FA6825-D98F-4D97-BBA8-DCB0B9B215BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32FA6825-D98F-4D97-BBA8-DCB0B9B215BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32FA6825-D98F-4D97-BBA8-DCB0B9B215BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32FA6825-D98F-4D97-BBA8-DCB0B9B215BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5891464A-7A7C-466F-A07B-86C7CAAA8250}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5891464A-7A7C-466F-A07B-86C7CAAA8250}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5891464A-7A7C-466F-A07B-86C7CAAA8250}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5891464A-7A7C-466F-A07B-86C7CAAA8250}.Release|Any CPU.Build.0 = Release|Any CPU
+		{600C9081-E594-45D6-AA32-A63FB58FB6B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{600C9081-E594-45D6-AA32-A63FB58FB6B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{600C9081-E594-45D6-AA32-A63FB58FB6B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{600C9081-E594-45D6-AA32-A63FB58FB6B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88635471-7A38-4928-B188-C28DC9ABF979}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88635471-7A38-4928-B188-C28DC9ABF979}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88635471-7A38-4928-B188-C28DC9ABF979}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88635471-7A38-4928-B188-C28DC9ABF979}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB1264E3-251B-4412-8D08-41E3B593EF59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB1264E3-251B-4412-8D08-41E3B593EF59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB1264E3-251B-4412-8D08-41E3B593EF59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB1264E3-251B-4412-8D08-41E3B593EF59}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = WebMVCTest\WebMVCTest.csproj
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

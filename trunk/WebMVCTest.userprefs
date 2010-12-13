@@ -1,0 +1,31 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ctype="Workspace" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="WebMVCTest/Example.xml" ctype="Workbench">
+    <Files>
+      <File FileName="WebMVCTest/Example.xml" Line="25" Column="34" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="WebMVCTest" expanded="True">
+            <Node name="Properties" expanded="True" />
+            <Node name="Example.xml" selected="True" />
+          </Node>
+          <Node name="WebMVCTest.Engine" expanded="True" />
+          <Node name="WebMVCTest.Model" expanded="True">
+            <Node name="Assertion" expanded="True" />
+          </Node>
+          <Node name="WebMVCTest.Report" expanded="True" />
+          <Node name="WebMVCTest.XML" expanded="True">
+            <Option id="ShowVersionControlOverlays" value="True" />
+            <Option id="ShowAllFiles" value="False" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches ctype="PinnedWatchStore" />
+</Properties>
