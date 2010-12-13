@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{32FA6825-D98F-4D97-BBA8-DCB0B9B215BE}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebMVCTest</RootNamespace>
+    <AssemblyName>WebMVCTest</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject>WebMVCTest.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <None Include="Example.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WebMVCTest.Engine\WebMVCTest.Engine.csproj">
+      <Project>{AB1264E3-251B-4412-8D08-41E3B593EF59}</Project>
+      <Name>WebMVCTest.Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebMVCTest.Model\WebMVCTest.Model.csproj">
+      <Project>{5891464A-7A7C-466F-A07B-86C7CAAA8250}</Project>
+      <Name>WebMVCTest.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebMVCTest.XML\WebMVCTest.XML.csproj">
+      <Project>{600C9081-E594-45D6-AA32-A63FB58FB6B8}</Project>
+      <Name>WebMVCTest.XML</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WebMVCTest.Report\WebMVCTest.Report.csproj">
+      <Project>{88635471-7A38-4928-B188-C28DC9ABF979}</Project>
+      <Name>WebMVCTest.Report</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

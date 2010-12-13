@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.webtest.org/xsd/webtest-0.1.xsd"
+  xmlns="http://www.webtest.org/xsd/webtest-0.1.xsd"
+	elementFormDefault="qualified"
+	version="0.1">
+  
+	<xs:element name="name" type="xs:string" />
+	<xs:element name="description" type="xs:string" />
+
+	<xs:simpleType name="HttpMethodType">
+	  <xs:restriction base="xs:string">
+	    <xs:enumeration value="GET"/>
+	    <xs:enumeration value="POST"/>
+	  </xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="conditionType">
+	  <xs:restriction base="xs:string">
+	    <xs:enumeration value="previousFunctionFailed"/>
+	    <xs:enumeration value="previousFunctionSucceded"/>
+	  </xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="projectType">
+		<xs:all>
+			<xs:element ref="name" minOccurs="0"/>
+			<xs:element ref="description" minOccurs="0"/>
+			<xs:element name="baseUrl" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="functions" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="function" minOccurs="1" maxOccurs="unbounded" type="functionType" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="testSets" minOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="testSet" minOccurs="1" maxOccurs="unbounded" type="testSetType" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+  
+	<xs:complexType name="functionType">
+		<xs:all>
+			<xs:element ref="name" minOccurs="0"/>
+			<xs:element ref="description" minOccurs="0"/>
+      <xs:element minOccurs="0" name="url" type="xs:string" maxOccurs="1"/>
+			<xs:element minOccurs="0" name="method" type="HttpMethodType" maxOccurs="1"/>
+			<xs:element minOccurs="0" name="params" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" name="param">
+							<xs:complexType>
+								<xs:attribute name="key" type="xs:string" use="required" />
+								<xs:attribute name="value" type="xs:string" use="required" />
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" name="assertions">
+        <xs:annotation>
+          <xs:documentation>
+            Only when a function has assertions, results will be recorded. No sense in recording the http response
+            if we do not know if a 200 or a 500 status code is expected.
+          </xs:documentation>
+        </xs:annotation>
+				<xs:complexType>
+					<xs:all>
+						<xs:element minOccurs="0" name="notNull" />
+						<xs:element minOccurs="0" name="responseTextDoesNotContain">
+							<xs:complexType>
+								<xs:attribute name="value" type="xs:string" use="required" />
+							</xs:complexType>
+						</xs:element>
+						<xs:element minOccurs="0" name="responseTextLargerThan">
+							<xs:complexType>
+								<xs:attribute name="size" type="xs:unsignedByte" use="required" />
+							</xs:complexType>
+						</xs:element>
+						<xs:element minOccurs="0" name="responseTextContains">
+							<xs:complexType>
+								<xs:attribute name="value" type="xs:string" use="required" />
+							</xs:complexType>
+						</xs:element>
+						<xs:element minOccurs="0" name="responseCodeEquals">
+							<xs:complexType>
+								<xs:attribute name="statusCode" type="xs:unsignedByte" use="required" />
+							</xs:complexType>
+						</xs:element>
+						<xs:element minOccurs="0" name="jsonArraySizeLargerThan">
+							<xs:complexType>
+								<xs:attribute name="size" type="xs:unsignedByte" use="required" />
+							</xs:complexType>
+						</xs:element>
+						<xs:element minOccurs="0" name="jsonArrayValueEquals">
+							<xs:complexType>
+								<xs:attribute name="row" type="xs:unsignedByte" use="required" />
+								<xs:attribute name="column" type="xs:string" use="required" />
+								<xs:attribute name="value" type="xs:string" use="required" />
+							</xs:complexType>
+						</xs:element>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" name="processors">
+				<xs:complexType>
+					<xs:all>            
+            <xs:element minOccurs="0" name="jsonArray">
+							<xs:complexType>
+								<xs:attribute name="var" type="xs:string" use="required" />
+                <xs:attribute name="row" type="xs:unsignedByte" use="required">
+                  <xs:annotation>
+                    <xs:documentation>
+                      When the row attribute contains a '?', a random value will be used from the current size of 
+                      the array. When row contains a variable it will also be replaced.
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="column" type="xs:string" use="required">
+                  <xs:annotation>
+                    <xs:documentation>
+                      When the value is {ROWNUM} the index of the array is used.
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:attribute>
+							</xs:complexType>
+						</xs:element>
+						<xs:element minOccurs="0" name="jsonObject">
+							<xs:complexType>
+								<xs:attribute name="var" type="xs:string" use="required" />
+								<xs:attribute name="column" type="xs:string" use="required" />
+							</xs:complexType>
+						</xs:element>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="ref" type="xs:string" use="optional" />
+		<xs:attribute name="whenPreviousFunctionFailed" type="xs:boolean" use="optional" />
+    <xs:attribute name="waitInSeconds" type="xs:unsignedByte" use="optional" />
+  </xs:complexType>
+  
+	<xs:complexType name="testSetType">
+		<xs:all>
+			<xs:element ref="name" minOccurs="0"/>
+			<xs:element ref="description" minOccurs="0"/>
+			<xs:element name="functions" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="function" minOccurs="1" maxOccurs="unbounded" type="functionType" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+  <xs:element name="project" type="projectType" />
+
+</xs:schema>

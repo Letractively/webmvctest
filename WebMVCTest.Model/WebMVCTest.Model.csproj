@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5891464A-7A7C-466F-A07B-86C7CAAA8250}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>WebMVCTest.Model</RootNamespace>
+    <AssemblyName>WebMVCTest.Model</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Log4net\1.2.10\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.Net20, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Newtonsoft.Json\3.5.8\Newtonsoft.Json.Net20.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Assertion\JsonArraySizeLargerThanAssertion.cs" />
+    <Compile Include="Project.cs" />
+    <Compile Include="Result\FunctionResult.cs" />
+    <Compile Include="TestSet.cs" />
+    <Compile Include="Function.cs" />
+    <Compile Include="Assertion\AbstractAssertion.cs" />
+    <Compile Include="Assertion\NotNullAssertion.cs" />
+    <Compile Include="Processor\AbstractProcessor.cs" />
+    <Compile Include="Context.cs" />
+    <Compile Include="Processor\JsonArrayProcessor.cs" />
+    <Compile Include="Processor\JsonObjectProcessor.cs" />
+    <Compile Include="IResolver.cs" />
+    <Compile Include="ContextResolver.cs" />
+    <Compile Include="Assertion\JsonArrayValueEqualsAssertion.cs" />
+    <Compile Include="Assertion\JsonObjectValueEqualsAssertion.cs" />
+    <Compile Include="Assertion\ResponseTextDoesNotContainAssertion.cs" />
+    <Compile Include="Assertion\ResponseTextContainsAssertion.cs" />
+    <Compile Include="Assertion\ResponseTextLargerThanAssertion.cs" />
+    <Compile Include="Assertion\ResponseCodeEqualsAssertion.cs" />
+    <Compile Include="IResponse.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

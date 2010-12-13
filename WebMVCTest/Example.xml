@@ -1,0 +1,40 @@
+<project xmlns="http://www.webtest.org/xsd/webtest-0.1.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.webtest.org WebTest.xsd">
+	<name>Test</name>
+	<description>Just a simple test to see if it all works</description>
+	<baseUrl>http://blog.limmen.org/</baseUrl>
+	<testSets>
+		<testSet>
+			<name>Test Set 1</name>
+			<functions>
+				<function>
+					<name>Test Page 1</name>
+					<url>2010/10/changing-a-private-variable-for-testing/</url>
+					<method>GET</method>
+					<assertions>
+						<notNull />
+						<responseTextContains value="Sometimes you just need"/>
+					</assertions>
+				</function>
+				<function whenPreviousFunctionFailed="true">
+					<name>ExecuteWhenPreviousFailed</name>
+					<url>2010/09/norah-is-drie-geworden/</url>
+					<method>GET</method>
+					<assertions>
+						<notNull />
+						<responseTextContains value="drie jaar"/>
+						<responseCodeEquals statusCode="200"/>
+					</assertions>
+				</function>
+				<function>
+					<name>About</name>
+					<url>about/</url>
+					<method>GET</method>
+					<assertions>
+						<notNull />
+						<responseTextContains value="Ivo Limmen"/>
+					</assertions>
+				</function>
+			</functions>
+		</testSet>
+	</testSets>
+</project>
