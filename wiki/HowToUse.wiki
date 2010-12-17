@@ -1,5 +1,5 @@
 #labels Featured,Usage
-#This document describes how to use the webMVCTest application and test an MVN website
+This document describes how to use the webMVCTest application and test an MVN website
 
 = Command line =
 When you build the application it produces a console application. Use it the following way:
