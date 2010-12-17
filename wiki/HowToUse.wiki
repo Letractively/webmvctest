@@ -1,0 +1,37 @@
+#labels Featured,Usage
+#This document describes how to use the webMVCTest application and test an MVN website
+
+= Command line =
+When you build the application it produces a console application. Use it the following way:
+
+WebMVNTest.exe [-r] [-l] [-d] [-t <testSet] fileName.xml
+
+Options are:
+ * -r report the results in a PDF
+ * -d add debugging output
+ * -l add logging output to file
+ * -t <testSet] test only a specific testSet. Useful when building your test project.
+
+= XML Structure =
+<project>
+  <name>
+  <description>
+  <baseUrl>
+  <functions>
+    <function>
+  <testSets>
+    <testSet>
+      <name>
+      <description>      
+      <function>
+
+Function has the following structure:
+<function>
+  <name>
+  <description>
+  <url> (the baseUrl of the project is added to this url)
+  <method> (either POST or GET)  
+  <params>
+    <param key="" value=""> (params are only used in POSTs)
+  <assertions>
+  <processors>
