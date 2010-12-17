@@ -4,7 +4,7 @@
 = Command line =
 When you build the application it produces a console application. Use it the following way:
 
-WebMVNTest.exe [-r] [-l] [-d] [-t <testSet] fileName.xml
+WebMVNTest.exe [-r] [-l] [-d] [-t <testSet>] fileName.xml
 
 Options are:
  * -r report the results in a PDF
@@ -22,7 +22,7 @@ Options are:
   <testSets>
     <testSet>
       <name>
-      <description>      
+      <description>
       <function>
 
 Function has the following structure:
@@ -34,4 +34,13 @@ Function has the following structure:
   <params>
     <param key="" value=""> (params are only used in POSTs)
   <assertions>
+    <notNull> (checks if the call returns content)
+    <responseTextDoesNotContain value=""> (checks if the response text does not contain a certain text)
+    <responseTextContains value=""> (checks if the response text does contain a certain text)
+    <responseTextLargerThan size=""> (checks if the content length is larger than ..)
+    <responseCodeEquals statusCode=""> (check the statusCode of the response; 200,302,500 etc.)
+    <jsonArraySizeLargerThan size=""> (check if the result is a json array and larger than a given size)
+    <jsonArrayValueEquals row="" column="" value=""> (check if a certain column in a row of json objects is equal to a certain value)
   <processors>
+    <jsonArray row="" column="" var=""> (defines a new variable containing the value located in the json array response at the given row and column)
+    <jsonObject column="" var=""> (defines a new variable containing the value located in the json object response at with the given column name)
