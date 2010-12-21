@@ -13,50 +13,58 @@ using System.Globalization;
 
 namespace WebMVCTest.Engine
 {
-	public class HttpSession : IDisposable, IResponse
-	{
-		private static ILog LOG = LogManager.GetLogger (typeof(HttpSession));
+    public class HttpSession : IDisposable, IResponse
+    {
+        private static ILog LOG = LogManager.GetLogger(typeof(HttpSession));
 
-		private CookieContainer cookieJar = new CookieContainer ();
+        private CookieContainer cookieJar = new CookieContainer();
 
         /// <summary>
         /// Timeout, miliseconds before the request is cancelled.
         /// </summary>
         private int timeout = 30000;
 
-		private int statusCode;
+        private int statusCode;
 
-		private string statusDescription;
+        private string statusDescription;
 
         private bool timedOut;
 
-		private string baseUrl;
+        private string baseUrl;
 
-		private string responseText;
+        private string responseText;
 
         private DateTime startTime;
 
         private TimeSpan? executionTime;
 
-		public HttpSession (string baseUrl)
-		{
-			LOG.Debug ("Create HttpSession with baseUrl: " + baseUrl);
-			this.SetBaseUrl (baseUrl);
-		}
+        private Authentication authentication;
 
-		public void SetBaseUrl (string baseUrl)
-		{
-			this.baseUrl = baseUrl;
-		}
+        public HttpSession(string baseUrl, Authentication authentication)
+        {
+            LOG.Debug("Create HttpSession with baseUrl: " + baseUrl);
+            this.SetBaseUrl(baseUrl);
+            this.SetAuthentication(authentication);
+        }
 
-		private string GetUrl (string urlPart)
-		{
-			return this.baseUrl + urlPart;
-		}
+        public void SetAuthentication(Authentication authentication)
+        {
+            this.authentication = authentication;
+        }
 
-		public void Post (string url, NameValueCollection data)
-		{
-			HttpWebResponse response = GetResponse (url, "POST", data);
+        public void SetBaseUrl(string baseUrl)
+        {
+            this.baseUrl = baseUrl;
+        }
+
+        private string GetUrl(string urlPart)
+        {
+            return this.baseUrl + urlPart;
+        }
+
+        public void Post(string url, NameValueCollection data, string postbody)
+        {
+            HttpWebResponse response = GetResponse(url, "POST", data, postbody);
 
             if (response != null)
             {
@@ -70,9 +78,9 @@ namespace WebMVCTest.Engine
             SetExecutionTime();
         }
 
-		public void Get (string url)
-		{
-			HttpWebResponse response = GetResponse (url, "GET", null);
+        public void Get(string url)
+        {
+            HttpWebResponse response = GetResponse(url, "GET", null, null);
 
             if (response != null)
             {
@@ -80,24 +88,24 @@ namespace WebMVCTest.Engine
                 this.responseText = stream.ReadToEnd();
                 stream.Close();
             }
-            
+
             SetExecutionTime();
-		}
+        }
 
-		public int GetStatusCode ()
-		{
-			return this.statusCode;
-		}
+        public int GetStatusCode()
+        {
+            return this.statusCode;
+        }
 
-		public string GetStatusDescription ()
-		{
-			return this.statusDescription;
-		}
+        public string GetStatusDescription()
+        {
+            return this.statusDescription;
+        }
 
-		public string GetResponseText()
-		{
-			return this.responseText;
-		}
+        public string GetResponseText()
+        {
+            return this.responseText;
+        }
 
         public TimeSpan? GetExecutionTime()
         {
@@ -123,12 +131,19 @@ namespace WebMVCTest.Engine
             }
         }
 
-		private HttpWebResponse GetResponse (string urlPart, string method, NameValueCollection data)
-		{
-			HttpWebRequest request = (HttpWebRequest)WebRequest.Create (this.GetUrl (urlPart));
-			request.CookieContainer = this.cookieJar;
+        private HttpWebResponse GetResponse(string urlPart, string method, NameValueCollection data, string postbody)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(this.GetUrl(urlPart));
+
+            if (this.authentication != null)
+            {
+                LOG.DebugFormat("Using authentication '{0}'", this.authentication.Name);
+                request.Credentials = new NetworkCredential(this.authentication.Name, this.authentication.Password);
+            }
+
+            request.CookieContainer = this.cookieJar;
             request.Timeout = this.timeout;
-			request.Method = method;
+            request.Method = method;
 
             this.statusCode = 0;
             this.statusDescription = null;
@@ -136,33 +151,42 @@ namespace WebMVCTest.Engine
 
             // set the start time
             this.startTime = DateTime.Now;
-			LOG.InfoFormat ("{0} {1}", method, urlPart);
-			
-			if ("POST".Equals (method))
-			{
-				byte[] postData = ASCIIEncoding.UTF8.GetBytes (CreateRequestString (data));
-				
-				request.ContentType = "application/x-www-form-urlencoded";
-				request.ContentLength = postData.Length;
-				
-				LOG.DebugFormat ("Post data: {0}", CreateRequestString (data));
+            LOG.InfoFormat("{0} {1}", method, urlPart);
+
+            if ("POST".Equals(method))
+            {
+                string postData = null;
+
+                if (data.Count > 0)
+                {
+                    postData = CreateRequestString(data);
+                }
+                else
+                {
+                    postData = postbody;
+                }
+
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.ContentLength = postData.Length;
+
+                LOG.DebugFormat("Post data: {0}", postData);
 
                 using (Stream newStream = request.GetRequestStream())
                 {
-                    newStream.Write(postData, 0, postData.Length);
+                    newStream.Write(ASCIIEncoding.UTF8.GetBytes(postData), 0, postData.Length);
                     newStream.Close();
                 }
-			}
-			
-			HttpWebResponse response = null;
-			
-			try
-			{
-				response = (HttpWebResponse)request.GetResponse();
-			}
-			catch (WebException we)
-			{
-                if (we.Status == WebExceptionStatus.Timeout) 
+            }
+
+            HttpWebResponse response = null;
+
+            try
+            {
+                response = (HttpWebResponse)request.GetResponse();
+            }
+            catch (WebException we)
+            {
+                if (we.Status == WebExceptionStatus.Timeout)
                 {
                     this.timedOut = true;
 
@@ -170,52 +194,52 @@ namespace WebMVCTest.Engine
                     return null;
                 }
 
-				response = (HttpWebResponse)we.Response;
-			}            
+                response = (HttpWebResponse)we.Response;
+            }
 
-			if (response != null)
-			{
-				this.statusCode = (int)response.StatusCode;
-				this.statusDescription = response.StatusDescription;
+            if (response != null)
+            {
+                this.statusCode = (int)response.StatusCode;
+                this.statusDescription = response.StatusDescription;
                 this.timedOut = false;
-			}
+            }
 
-			LOG.DebugFormat("{0} {1}", this.statusCode, this.statusDescription);
+            LOG.DebugFormat("{0} {1}", this.statusCode, this.statusDescription);
 
-			return response;
-		}
+            return response;
+        }
 
-		private string CreateRequestString (NameValueCollection data)
-		{
-			StringBuilder requestString = new StringBuilder ();
-			
-			foreach (string key in data.Keys)
-			{
-				if (requestString.Length > 0)
-				{
-					requestString.Append ("&");
-				}
-				
-				requestString.Append (key);
-				requestString.Append ("=");
-				requestString.Append (data[key]);
-			}
-			
-			return requestString.ToString ();
-		}
+        private string CreateRequestString(NameValueCollection data)
+        {
+            StringBuilder requestString = new StringBuilder();
 
-		public void End ()
-		{
-			this.cookieJar = null;
-		}
+            foreach (string key in data.Keys)
+            {
+                if (requestString.Length > 0)
+                {
+                    requestString.Append("&");
+                }
 
-		#region IDisposable Members
+                requestString.Append(key);
+                requestString.Append("=");
+                requestString.Append(data[key]);
+            }
 
-		public void Dispose ()
-		{
-			this.End ();
-		}
-		
-		#endregion
-	}
+            return requestString.ToString();
+        }
+
+        public void End()
+        {
+            this.cookieJar = null;
+        }
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            this.End();
+        }
+
+        #endregion
+    }
 }

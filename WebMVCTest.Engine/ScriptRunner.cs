@@ -85,11 +85,9 @@ namespace WebMVCTest.Engine
 			
 			if (!string.IsNullOrEmpty(this.settings.TestSet))
 			{
-				LOG.InfoFormat("Only executing testset {0}", this.settings.TestSet);
-				
+				LOG.InfoFormat("Only executing testset {0}", this.settings.TestSet);				
 				Execute(this.project.GetTestSetByName(this.settings.TestSet));
 			}
-
 			else
 			{
 				foreach (TestSet testSet in this.project.TestSets)
@@ -102,7 +100,7 @@ namespace WebMVCTest.Engine
 		private void Execute(TestSet testSet)
 		{
 			// Each testset will run in it's own http session
-			HttpSession session = new HttpSession(this.project.BaseUrl);
+			HttpSession session = new HttpSession(this.project.BaseUrl, testSet.GetAuthentication());
 			
 			LOG.InfoFormat("TestSet: {0}", testSet.Name);
 			
@@ -142,7 +140,7 @@ namespace WebMVCTest.Engine
 			}
 			else if ("POST".Equals(function.Method))
 			{
-				session.Post(url, function.GetPostData(context.GetResolver()));
+				session.Post(url, function.GetPostData(context.GetResolver()), function.GetPostBody());
 			}
 			else
 			{

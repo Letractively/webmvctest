@@ -8,33 +8,58 @@
 	<xs:element name="name" type="xs:string" />
 	<xs:element name="description" type="xs:string" />
 
-	<xs:simpleType name="HttpMethodType">
+  <xs:element name="param">
+    <xs:complexType>
+      <xs:attribute name="key" type="xs:string" use="required" />
+      <xs:attribute name="value" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="HttpMethodType">
 	  <xs:restriction base="xs:string">
 	    <xs:enumeration value="GET"/>
 	    <xs:enumeration value="POST"/>
 	  </xs:restriction>
 	</xs:simpleType>
 
-	<xs:simpleType name="conditionType">
-	  <xs:restriction base="xs:string">
-	    <xs:enumeration value="previousFunctionFailed"/>
-	    <xs:enumeration value="previousFunctionSucceded"/>
-	  </xs:restriction>
-	</xs:simpleType>
-	
-	<xs:complexType name="projectType">
+  <xs:complexType name="authenticationType">
+    <xs:all>
+      <xs:element ref="name" minOccurs="0"/>
+      <xs:element name="user" minOccurs="0"/>
+      <xs:element name="password" minOccurs="0"/>
+    </xs:all>
+    <xs:attribute name="type" type="xs:string" use="optional" />
+    <xs:attribute name="ref" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="projectType">
 		<xs:all>
 			<xs:element ref="name" minOccurs="0"/>
 			<xs:element ref="description" minOccurs="0"/>
 			<xs:element name="baseUrl" type="xs:string" minOccurs="1" maxOccurs="1"/>
-			<xs:element name="functions" minOccurs="0">
+      <xs:element name="authentications" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="authentication" minOccurs="1" maxOccurs="unbounded" type="authenticationType" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="functions" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="function" minOccurs="1" maxOccurs="unbounded" type="functionType" />
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="testSets" minOccurs="1">
+      <xs:element minOccurs="0" name="context" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" ref="param">
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="testSets" minOccurs="1">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="testSet" minOccurs="1" maxOccurs="unbounded" type="testSetType" />
@@ -50,16 +75,14 @@
 			<xs:element ref="description" minOccurs="0"/>
       <xs:element minOccurs="0" name="url" type="xs:string" maxOccurs="1"/>
 			<xs:element minOccurs="0" name="method" type="HttpMethodType" maxOccurs="1"/>
-			<xs:element minOccurs="0" name="params" maxOccurs="1">
+      <xs:element name="authentication" minOccurs="0" maxOccurs="1" type="authenticationType" />
+      <xs:element minOccurs="0" name="postbody" type="xs:string" maxOccurs="1"/>
+      <xs:element minOccurs="0" name="params" maxOccurs="1">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element maxOccurs="unbounded" name="param">
-							<xs:complexType>
-								<xs:attribute name="key" type="xs:string" use="required" />
-								<xs:attribute name="value" type="xs:string" use="required" />
-							</xs:complexType>
-						</xs:element>
-					</xs:sequence>
+            <xs:element maxOccurs="unbounded" ref="param">
+            </xs:element>
+          </xs:sequence>
 				</xs:complexType>
 			</xs:element>
 			<xs:element minOccurs="0" name="assertions">
