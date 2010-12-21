@@ -1,7 +1,10 @@
-<project xmlns="http://www.webtest.org/xsd/webtest-0.1.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.webtest.org WebTest.xsd">
+<project xmlns="http://www.webtest.org/xsd/webmvctest-0.1.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.webtest.org WebMVCTest-0.1.xsd">
 	<name>Test</name>
 	<description>Just a simple test to see if it all works</description>
 	<baseUrl>http://blog.limmen.org/</baseUrl>
+  <context>
+    <param key="USERNAME" value="Ivo"/>
+  </context>
 	<testSets>
 		<testSet>
 			<name>Test Set 1</name>

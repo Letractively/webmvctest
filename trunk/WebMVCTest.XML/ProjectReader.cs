@@ -46,6 +46,10 @@ namespace WebMVCTest.XML
                         {
                             project.BaseUrl = reader.ReadElementContentAsString();
                         }
+                        else if (reader.Name.Equals("context"))
+                        {
+                            ReadParams(project);
+                        }
                         else if (reader.Name.Equals("testSet"))
                         {
                             if (project.TestSets == null)
@@ -65,6 +69,10 @@ namespace WebMVCTest.XML
                         {
                             project.Functions.Add(ReadFunction());
                         }
+                        else if (reader.Name.Equals("authentications"))
+                        {
+                            ReadAuthentications(project);
+                        }
                         break;
 
                     case XmlNodeType.EndElement:
@@ -74,10 +82,6 @@ namespace WebMVCTest.XML
                             return project;
                         }
 
-
-
-
-
                         break;
                 }
             }
@@ -85,9 +89,63 @@ namespace WebMVCTest.XML
             return project;
         }
 
+        private void ReadAuthentications(Project project)
+        {
+            Authentication authentication = new Authentication();
+
+            while (reader.Read())
+            {
+                switch (reader.NodeType)
+                {
+                    case XmlNodeType.Element:
+
+                        if (reader.Name.Equals("authentication"))
+                        {
+                            for (int i = 0; i < reader.AttributeCount; i++)
+                            {
+                                reader.MoveToAttribute(i);
+                                if (reader.Name.Equals("type"))
+                                {
+                                    authentication.Type = reader.Value;
+                                }
+                            }
+                        }
+                        else if (reader.Name.Equals("name")) 
+                        {
+                            authentication.Name = reader.ReadElementContentAsString();
+                        }
+                        else if (reader.Name.Equals("user"))
+                        {
+                            authentication.User = reader.ReadElementContentAsString();
+                        }
+                        else if (reader.Name.Equals("password"))
+                        {
+                            authentication.Password = reader.ReadElementContentAsString();
+                        }
+
+                        break;
+
+                    case XmlNodeType.EndElement:
+
+                        if (reader.Name.Equals("authentication"))
+                        {
+                            project.AddAuthentication(authentication);
+                            authentication = new Authentication();
+                            return;
+                        }
+                        else if (reader.Name.Equals("authentications"))
+                        {
+                            return;
+                        }
+
+                        break;
+                }
+            }
+        }
+
         private TestSet ReadTestSet(Project project)
         {
-            TestSet testSet = new TestSet();
+            TestSet testSet = new TestSet(project);
 
             while (reader.Read())
             {
@@ -102,6 +160,21 @@ namespace WebMVCTest.XML
                         else if (reader.Name.Equals("description"))
                         {
                             testSet.Description = GetDescription();
+                        }
+                        else if (reader.Name.Equals("authentication"))
+                        {
+                            string name = null;
+
+                            for (int i = 0; i < reader.AttributeCount; i++)
+                            {
+                                reader.MoveToAttribute(i);
+                                if (reader.Name.Equals("ref"))
+                                {
+                                    name = reader.Value;
+                                }
+                            }
+
+                            testSet.SetAuthentication(project.GetAuthenticationByName(name));
                         }
                         else if (reader.Name.Equals("function"))
                         {
@@ -188,8 +261,6 @@ namespace WebMVCTest.XML
                         {
                             function.Name = reader.ReadElementContentAsString();
                         }
-
-
                         else if (reader.Name.Equals("description"))
                         {
                             function.Description = GetDescription();
@@ -201,6 +272,10 @@ namespace WebMVCTest.XML
                         else if (reader.Name.Equals("url"))
                         {
                             function.SetUrl(reader.ReadElementContentAsString());
+                        }
+                        else if (reader.Name.Equals("postbody"))
+                        {
+                            function.SetPostBody(reader.ReadElementContentAsString());
                         }
                         else if (reader.Name.Equals("params"))
                         {
@@ -230,7 +305,7 @@ namespace WebMVCTest.XML
             return function;
         }
 
-        private void ReadParams(Function function)
+        private void ReadParams(IKeyValueContainer keyValueStore)
         {
             while (reader.Read())
             {
@@ -250,15 +325,13 @@ namespace WebMVCTest.XML
                                 {
                                     key = reader.Value;
                                 }
-
-
                                 else if (reader.Name.Equals("value"))
                                 {
                                     val = reader.Value;
                                 }
                             }
 
-                            function.AddPostData(key, val);
+                            keyValueStore.AddKeyValueData(key, val);
                         }
 
                         break;
@@ -266,6 +339,10 @@ namespace WebMVCTest.XML
                     case XmlNodeType.EndElement:
 
                         if (reader.Name.Equals("params"))
+                        {
+                            return;
+                        }
+                        else if (reader.Name.Equals("context"))
                         {
                             return;
                         }
@@ -289,7 +366,6 @@ namespace WebMVCTest.XML
                             reader.ReadAttributeValue();
                             function.AddAssertion(new ResponseTextContainsAssertion(reader.Value));
                         }
-
                         else if (reader.Name.Equals("responseTextDoesNotContain"))
                         {
                             reader.MoveToFirstAttribute();
@@ -350,7 +426,6 @@ namespace WebMVCTest.XML
                                 {
                                     column = reader.Value;
                                 }
-
                                 else if (reader.Name.Equals("value"))
                                 {
                                     value = reader.Value;
@@ -371,7 +446,6 @@ namespace WebMVCTest.XML
                                     size = Int32.Parse(reader.Value);
                                 }
                             }
-
                             function.AddAssertion(new JsonArraySizeLargerThanAssertion(size));
                         }
                         break;
@@ -382,8 +456,6 @@ namespace WebMVCTest.XML
                         {
                             return;
                         }
-
-
                         break;
                 }
             }
@@ -423,7 +495,6 @@ namespace WebMVCTest.XML
 
                             function.AddProcessor(new JsonArrayProcessor(varName, row, column));
                         }
-
                         else if (reader.Name.Equals("jsonObject"))
                         {
                             string column = null;
@@ -444,7 +515,7 @@ namespace WebMVCTest.XML
                             }
 
                             function.AddProcessor(new JsonObjectProcessor(varName, column));
-                        }                      
+                        }
                         break;
 
                     case XmlNodeType.EndElement:

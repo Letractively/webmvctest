@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 namespace WebMVCTest.Model
 {
-	public class Project
+    public class Project : IKeyValueContainer
 	{
 		public string Name { get; set; }
 
@@ -10,9 +10,28 @@ namespace WebMVCTest.Model
 
 		public string BaseUrl { get; set; }
 
+        private List<Authentication> authentications = new List<Authentication>();
+
 		public List<TestSet> TestSets { get; set; }
 
 		public List<Function> Functions { get; set; }
+
+        private Context initialContext = new Context();
+
+        public void AddAuthentication(Authentication authentication)
+        {
+            this.authentications.Add(authentication);
+        }
+
+        /// <summary>
+        /// Add a key value pair to the initial context
+        /// </summary>
+        /// <param name="key">key of the variable</param>
+        /// <param name="value">value ofthe variable</param>
+        public void AddKeyValueData(string key, string value)
+        {
+            this.initialContext.Add(key, value);
+        }
 
 		public TestSet GetTestSetByName(string name)
 		{
@@ -61,6 +80,24 @@ namespace WebMVCTest.Model
 			
 			return null;
 		}
-	}
+
+        public Authentication GetAuthenticationByName(string name)
+        {
+            foreach (Authentication authentication in this.authentications)
+            {
+                if (name.Equals(authentication.Name))
+                {
+                    return authentication;
+                }
+            }
+
+            return null;
+        }
+
+        public Context GetInitialContext()
+        {
+            return this.initialContext.Copy();
+        }
+    }
 }
 

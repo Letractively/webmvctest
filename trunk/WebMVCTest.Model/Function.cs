@@ -7,11 +7,13 @@ using WebMVCTest.Model.Result;
 
 namespace WebMVCTest.Model
 {
-	public class Function
+    public class Function : IKeyValueContainer
 	{
 		private string url;
 
 		private int waitInSeconds;
+
+        private string postbody;
 
 		private Dictionary<string, string> postData = new Dictionary<string, string>();
 
@@ -32,7 +34,7 @@ namespace WebMVCTest.Model
 		/// </summary>
 		public string Method { get; set; }
 
-		public void AddPostData(string key, string value)
+		public void AddKeyValueData(string key, string value)
 		{
 			this.postData.Add(key, value);
 		}
@@ -106,6 +108,11 @@ namespace WebMVCTest.Model
 			return this.waitInSeconds;
 		}
 
+        public string GetPostBody()
+        {
+            return this.postbody;
+        }
+
 		public bool HasAssertions()
 		{
 			return this.assertions.Count > 0;
@@ -134,6 +141,11 @@ namespace WebMVCTest.Model
 		{
 			this.url = url;
 		}
+
+        public void SetPostBody(string postbody)
+        {
+            this.postbody = postbody;
+        }
 
 		public void SetWaitInSeconds(int seconds)
 		{
