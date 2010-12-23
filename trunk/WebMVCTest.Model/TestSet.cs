@@ -5,7 +5,7 @@ namespace WebMVCTest.Model
 {
 	public class TestSet
 	{
-        private Authentication authentication;
+		private Authentication authentication;
 
 		public string Name { get; set; }
 
@@ -13,42 +13,42 @@ namespace WebMVCTest.Model
 
 		public List<Function> Functions { get; set; }
 
-        private Context context = null;
+		private Context context = null;
 
-        public bool Executed { get; set; }
+		public bool Executed { get; set; }
 
-        private Project project;
+		private Project project;
 
-        public TestSet(Project project)
-        {
-            this.project = project;
-        }
-
-        public Authentication GetAuthentication()
-        {
-            return this.authentication;
-        }
-
-		public Context GetContext ()
+		public TestSet(Project project)
 		{
-            if (this.context == null) 
-            {
-                this.context = this.project.GetInitialContext();
-            }
+			this.project = project;
+		}
 
+		public Authentication GetAuthentication()
+		{
+			return this.authentication;
+		}
+
+		public Context GetContext()
+		{
+			if (this.context == null)
+			{
+				this.context = this.project.GetInitialContext();
+			}
+			
 			return this.context;
 		}
 
-		public void Clear ()
+		public void Clear()
 		{
-			this.context.Clear ();
+			this.context.Clear();
 		}
 
-		public Function GetFunctionByName (string name)
+		public Function GetFunctionByName(string name)
 		{
 			foreach (Function function in this.Functions)
 			{
-				if (name.Equals (function.Name))
+				if (name.Equals(function.Name))
 				{
 					return function.Copy();
 				}
@@ -57,10 +57,10 @@ namespace WebMVCTest.Model
 			return null;
 		}
 
-        public void SetAuthentication(Authentication authentication)
-        {
-            this.authentication = authentication;
-        }
-    }
+		public void SetAuthentication(Authentication authentication)
+		{
+			this.authentication = authentication;
+		}
+	}
 }
 

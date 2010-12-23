@@ -85,7 +85,7 @@ namespace WebMVCTest.Engine
 			
 			if (!string.IsNullOrEmpty(this.settings.TestSet))
 			{
-				LOG.InfoFormat("Only executing testset {0}", this.settings.TestSet);				
+				LOG.InfoFormat("Only executing testset {0}", this.settings.TestSet);
 				Execute(this.project.GetTestSetByName(this.settings.TestSet));
 			}
 			else
@@ -108,9 +108,9 @@ namespace WebMVCTest.Engine
 			{
 				Execute(session, testSet.GetContext(), function);
 			}
-
-            testSet.Executed = true;
-
+			
+			testSet.Executed = true;
+			
 			session.End();
 			session = null;
 		}
@@ -136,44 +136,49 @@ namespace WebMVCTest.Engine
 			
 			if ("GET".Equals(function.Method))
 			{
-				session.Get(url);
+				session.Get(url, function.GetHeaders());
 			}
 			else if ("POST".Equals(function.Method))
 			{
-				session.Post(url, function.GetPostData(context.GetResolver()), function.GetPostBody());
+				session.Post(url, function.GetHeaders(), function.GetPostData(context.GetResolver()), function.GetPostBody());
 			}
 			else
 			{
 				// Not support http method
 				throw new InvalidOperationException();
 			}
-			
-			// execute tests on results
-            try
-            {
-                function.Assert(session);
-            }
-            catch (Exception e) 
-            {
-                LOG.Error("Failed to run assertions on " + session.GetResponseText(), e);
 
-                throw e;
-            }
+			// execute tests on results
+			try
+			{
+				function.Assert(session);
+			}
+			catch (Exception e)
+			{
+				LOG.Error("Failed to run assertions on " + session.GetResponseText(), e);
+
+				throw e;
+			}
 
 			// process the data
-            try
-            {
-                function.Process(session, context);
-            }
-            catch (Exception e)
-            {
-                LOG.Error("Failed to run processor on " + session.GetResponseText(), e);
+			try
+			{
+				function.Process(session, context);
+			}
+			catch (Exception e)
+			{
+				LOG.Error("Failed to run processor on " + session.GetResponseText(), e);
 
-                throw e;
-            }
-            			
+				throw e;
+			}
+
 			LOG.Info("Function call: " + (function.GetResult().Success ? "SUCCESS" : "FAILED"));
-			
+
+			if (!function.GetResult().Success)
+			{
+				LOG.DebugFormat("Result (code:{0}): {1}", function.GetResult().StatusCode, function.GetResult().ResponseText);
+			}
+
 			this.lastFunctionSucceeded = function.GetResult().Success;
 		}
 	}

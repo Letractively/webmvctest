@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 namespace WebMVCTest.Model
 {
-    public class Project : IKeyValueContainer
+	public class Project : IKeyValueContainer
 	{
 		public string Name { get; set; }
 
@@ -10,28 +10,30 @@ namespace WebMVCTest.Model
 
 		public string BaseUrl { get; set; }
 
-        private List<Authentication> authentications = new List<Authentication>();
+		private List<Authentication> authentications = new List<Authentication>();
+
+		private Dictionary<string, string> defaultHeaders = new Dictionary<string, string>();
 
 		public List<TestSet> TestSets { get; set; }
 
 		public List<Function> Functions { get; set; }
 
-        private Context initialContext = new Context();
+		private Context initialContext = new Context();
 
-        public void AddAuthentication(Authentication authentication)
-        {
-            this.authentications.Add(authentication);
-        }
+		public void AddAuthentication(Authentication authentication)
+		{
+			this.authentications.Add(authentication);
+		}
 
-        /// <summary>
-        /// Add a key value pair to the initial context
-        /// </summary>
-        /// <param name="key">key of the variable</param>
-        /// <param name="value">value ofthe variable</param>
-        public void AddKeyValueData(string key, string value)
-        {
-            this.initialContext.Add(key, value);
-        }
+		/// <summary>
+		/// Add a key value pair to the initial context
+		/// </summary>
+		/// <param name="key">key of the variable</param>
+		/// <param name="value">value ofthe variable</param>
+		public void AddKeyValueData(string key, string value)
+		{
+			this.initialContext.Add(key, value);
+		}
 
 		public TestSet GetTestSetByName(string name)
 		{
@@ -62,7 +64,7 @@ namespace WebMVCTest.Model
 				{
 					if (name.Equals(function.Name))
 					{
-                        return function.Copy();
+						return function.Copy();
 					}
 				}
 			}
@@ -73,31 +75,41 @@ namespace WebMVCTest.Model
 				
 				if (function != null)
 				{
-                    // the function is allready a copy!
-                    return function;
+					// the function is allready a copy!
+					return function;
 				}
 			}
 			
 			return null;
 		}
 
-        public Authentication GetAuthenticationByName(string name)
-        {
-            foreach (Authentication authentication in this.authentications)
-            {
-                if (name.Equals(authentication.Name))
-                {
-                    return authentication;
-                }
-            }
+		public Dictionary<string, string> GetDefaultHeaders()
+		{
+			return this.defaultHeaders;
+		}
 
-            return null;
-        }
+		public Authentication GetAuthenticationByName(string name)
+		{
+			foreach (Authentication authentication in this.authentications)
+			{
+				if (name.Equals(authentication.Name))
+				{
+					return authentication;
+				}
+			}
+			
+			return null;
+		}
 
-        public Context GetInitialContext()
-        {
-            return this.initialContext.Copy();
-        }
-    }
+		public Context GetInitialContext()
+		{
+			return this.initialContext.Copy();
+		}
+
+		public void SetDefaultHeaders(Dictionary<string, string> headers)
+		{
+			this.defaultHeaders = headers;
+		}
+	}
 }
 
