@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://www.webtest.org/xsd/webtest-0.1.xsd"
-  xmlns="http://www.webtest.org/xsd/webtest-0.1.xsd"
+	targetNamespace="http://www.webmvctest.org/xsd/webmvctest-0.1.xsd"
+  xmlns="http://www.webmvctest.org/xsd/webmvctest-0.1.xsd"
 	elementFormDefault="qualified"
 	version="0.1">
   
@@ -9,6 +9,13 @@
 	<xs:element name="description" type="xs:string" />
 
   <xs:element name="param">
+    <xs:complexType>
+      <xs:attribute name="key" type="xs:string" use="required" />
+      <xs:attribute name="value" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="header">
     <xs:complexType>
       <xs:attribute name="key" type="xs:string" use="required" />
       <xs:attribute name="value" type="xs:string" use="required" />
@@ -44,6 +51,13 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="headers" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+            <xs:element maxOccurs="unbounded" ref="header"/>
+          </xs:sequence>
+				</xs:complexType>
+      </xs:element>
       <xs:element name="functions" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
@@ -75,16 +89,21 @@
 			<xs:element ref="description" minOccurs="0"/>
       <xs:element minOccurs="0" name="url" type="xs:string" maxOccurs="1"/>
 			<xs:element minOccurs="0" name="method" type="HttpMethodType" maxOccurs="1"/>
-      <xs:element name="authentication" minOccurs="0" maxOccurs="1" type="authenticationType" />
       <xs:element minOccurs="0" name="postbody" type="xs:string" maxOccurs="1"/>
       <xs:element minOccurs="0" name="params" maxOccurs="1">
 				<xs:complexType>
 					<xs:sequence>
-            <xs:element maxOccurs="unbounded" ref="param">
-            </xs:element>
+            <xs:element maxOccurs="unbounded" ref="param"/>
           </xs:sequence>
 				</xs:complexType>
 			</xs:element>
+      <xs:element name="headers" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+            <xs:element maxOccurs="unbounded" ref="header"/>
+          </xs:sequence>
+				</xs:complexType>
+      </xs:element>
 			<xs:element minOccurs="0" name="assertions">
         <xs:annotation>
           <xs:documentation>
@@ -172,6 +191,7 @@
 		<xs:all>
 			<xs:element ref="name" minOccurs="0"/>
 			<xs:element ref="description" minOccurs="0"/>
+      <xs:element name="authentication" minOccurs="0" maxOccurs="1" type="authenticationType" />
 			<xs:element name="functions" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>

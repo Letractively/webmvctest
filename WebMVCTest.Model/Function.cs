@@ -7,15 +7,17 @@ using WebMVCTest.Model.Result;
 
 namespace WebMVCTest.Model
 {
-    public class Function : IKeyValueContainer
+	public class Function : IKeyValueContainer
 	{
 		private string url;
 
 		private int waitInSeconds;
 
-        private string postbody;
+		private string postbody;
 
 		private Dictionary<string, string> postData = new Dictionary<string, string>();
+
+		private Dictionary<string, string> headers = new Dictionary<string, string>();
 
 		private List<AbstractAssertion> assertions = new List<AbstractAssertion>();
 
@@ -33,6 +35,13 @@ namespace WebMVCTest.Model
 		/// Either 'GET' or 'POST'
 		/// </summary>
 		public string Method { get; set; }
+
+		private Project project;
+
+		public Function(Project project)
+		{
+			this.project = project;
+		}
 
 		public void AddKeyValueData(string key, string value)
 		{
@@ -72,10 +81,26 @@ namespace WebMVCTest.Model
 			this.result.Executed = true;
 			this.result.ExecutionTime = response.GetExecutionTime();
 			this.result.Success = success;
-			this.result.TimedOut = response.IsTimedOut();            
-            this.result.StatusCode = response.GetStatusCode();
-            this.result.StatusDescription = response.GetStatusDescription();
-            this.result.ResponseText = response.GetResponseText();
+			this.result.TimedOut = response.IsTimedOut();
+			this.result.StatusCode = response.GetStatusCode();
+			this.result.StatusDescription = response.GetStatusDescription();
+			this.result.ResponseText = response.GetResponseText();
+		}
+
+		public Dictionary<string, string> GetHeaders()
+		{
+			Dictionary<string, string> newHeaders = new Dictionary<string, string>();
+
+			foreach (KeyValuePair<string, string> pair in this.headers)
+			{
+				newHeaders.Add(pair.Key, pair.Value);
+			}
+			foreach (KeyValuePair<string, string> pair in this.project.GetDefaultHeaders())
+			{
+				newHeaders.Add(pair.Key, pair.Value);
+			}
+
+			return newHeaders;
 		}
 
 		public string GetUrl(IResolver resolver)
@@ -108,10 +133,10 @@ namespace WebMVCTest.Model
 			return this.waitInSeconds;
 		}
 
-        public string GetPostBody()
-        {
-            return this.postbody;
-        }
+		public string GetPostBody()
+		{
+			return this.postbody;
+		}
 
 		public bool HasAssertions()
 		{
@@ -142,10 +167,15 @@ namespace WebMVCTest.Model
 			this.url = url;
 		}
 
-        public void SetPostBody(string postbody)
-        {
-            this.postbody = postbody;
-        }
+		public void SetHeaders(Dictionary<string, string> headers)
+		{
+			this.headers = headers;
+		}
+
+		public void SetPostBody(string postbody)
+		{
+			this.postbody = postbody;
+		}
 
 		public void SetWaitInSeconds(int seconds)
 		{
@@ -162,21 +192,22 @@ namespace WebMVCTest.Model
 			return this.whenPreviousFunctionFailed;
 		}
 
-        public Function Copy()        
-        {
-            Function function = new Function();
-            function.Name = this.Name;
-            function.Description = this.Description;
-            function.assertions = this.assertions;
-            function.processors = this.processors;
-            function.postData = this.postData;
-            function.Method = this.Method;
-            function.url = this.url;
-            function.waitInSeconds = this.waitInSeconds;
-            function.whenPreviousFunctionFailed = this.whenPreviousFunctionFailed;
-
-            return function;
-        }
+		public Function Copy()
+		{
+			Function function = new Function(this.project);
+			function.Name = this.Name;
+			function.Description = this.Description;
+			function.Method = this.Method;
+			function.headers = this.headers;
+			function.assertions = this.assertions;
+			function.processors = this.processors;
+			function.postData = this.postData;
+			function.url = this.url;
+			function.waitInSeconds = this.waitInSeconds;
+			function.whenPreviousFunctionFailed = this.whenPreviousFunctionFailed;
+			
+			return function;
+		}
 	}
 }
 
