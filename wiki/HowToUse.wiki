@@ -17,6 +17,8 @@ Options are:
   <name>
   <description>
   <baseUrl>
+  <headers>
+   <header key="" value=""> (See [SupportedHeaders supported headers] for more details)
   <functions>
     <function>
   <testSets>
@@ -31,8 +33,11 @@ Function has the following structure:
   <description>
   <url> (the baseUrl of the project is added to this url)
   <method> (either POST or GET)  
+  <headers>
+   <header key="" value=""> (See [SupportedHeaders supported headers] for more details)
   <params>
     <param key="" value=""> (params are only used in POSTs)
+  <postbody> (only used in POSTs, can handle CDATA)
   <assertions>
     <notNull> (checks if the call returns content)
     <responseTextDoesNotContain value=""> (checks if the response text does not contain a certain text)
