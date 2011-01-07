@@ -136,13 +136,21 @@ namespace WebMVCTest.Engine
 			
 			if ("GET".Equals(function.Method))
 			{
-				session.Get(url, function.GetHeaders());
+				session.Execute(url, "GET", function.GetHeaders());
 			}
 			else if ("POST".Equals(function.Method))
 			{
-				session.Post(url, function.GetHeaders(), function.GetPostData(context.GetResolver()), function.GetPostBody());
-			}
-			else
+                session.Execute(url, "POST", function.GetHeaders(), function.GetPostData(context.GetResolver()), function.GetPostBody());
+            }
+            else if ("PUT".Equals(function.Method))
+            {
+                session.Execute(url, "PUT", function.GetHeaders(), function.GetPostData(context.GetResolver()), function.GetPostBody());
+            }
+            else if ("DELETE".Equals(function.Method))
+            {
+                session.Execute(url, "DELETE", function.GetHeaders());
+            }
+            else
 			{
 				// Not support http method
 				throw new InvalidOperationException();

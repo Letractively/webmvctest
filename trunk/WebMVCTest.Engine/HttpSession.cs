@@ -67,9 +67,9 @@ namespace WebMVCTest.Engine
 			return this.baseUrl + urlPart;
 		}
 
-		public void Post(string url, Dictionary<string, string> headers, NameValueCollection data, string postbody)
+		public void Execute(string url, string method, Dictionary<string, string> headers, NameValueCollection data, string postbody)
 		{
-			HttpWebResponse response = GetResponse(url, "POST", headers, data, postbody);
+			HttpWebResponse response = GetResponse(url, method, headers, data, postbody);
 			
 			if (response != null)
 			{
@@ -83,9 +83,9 @@ namespace WebMVCTest.Engine
 			SetExecutionTime();
 		}
 
-		public void Get(string url, Dictionary<string, string> headers)
+		public void Execute(string url, string method, Dictionary<string, string> headers)
 		{
-			HttpWebResponse response = GetResponse(url, "GET", headers, null, null);
+			HttpWebResponse response = GetResponse(url, method, headers, null, null);
 			
 			if (response != null)
 			{
@@ -150,7 +150,8 @@ namespace WebMVCTest.Engine
 				
 				request.Credentials = cc;
 			}
-			
+
+            request.AllowAutoRedirect = false;
 			request.CookieContainer = this.cookieJar;
 			request.Timeout = this.timeout;
 			request.Method = method;
@@ -200,7 +201,7 @@ namespace WebMVCTest.Engine
 			this.startTime = DateTime.Now;
 			LOG.InfoFormat("{0} {1}", method, urlPart);
 
-			if ("POST".Equals(method))
+            if ("POST".Equals(method) || "PUT".Equals(method))
 			{
 				string postData = null;
 
@@ -210,10 +211,15 @@ namespace WebMVCTest.Engine
 				}
 				else
 				{
+                    if (postbody == null) 
+                    {
+                        postbody = "";
+                    }
+
 					postData = postbody;
 				}
 
-				if (request.ContentType == null)
+                if (request.ContentType == null)
 				{
 					request.ContentType = "application/x-www-form-urlencoded";
 				}
@@ -291,5 +297,5 @@ namespace WebMVCTest.Engine
 		}
 		
 		#endregion
-	}
+    }
 }
