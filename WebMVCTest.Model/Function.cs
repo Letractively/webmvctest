@@ -60,7 +60,8 @@ namespace WebMVCTest.Model
 
 		public void Assert(IResponse response)
 		{
-			bool success = false;
+            // when there are no assertions it is a success
+            bool success = (this.assertions.Count == 0);
 			
 			// when the response was timedout, there is no data to test/assert
 			if (!response.IsTimedOut())
