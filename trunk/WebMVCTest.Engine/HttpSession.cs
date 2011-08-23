@@ -64,7 +64,18 @@ namespace WebMVCTest.Engine
 
 		private string GetUrl(string urlPart)
 		{
-			return this.baseUrl + urlPart;
+            string url = null;
+
+            if (!urlPart.StartsWith("http"))
+            {
+                url = this.baseUrl + urlPart;
+            }
+            else
+            {
+                url = urlPart;
+            }
+
+            return url;
 		}
 
 		public void Execute(string url, string method, Dictionary<string, string> headers, NameValueCollection data, string postbody)
@@ -130,8 +141,6 @@ namespace WebMVCTest.Engine
 			{
 				LOG.DebugFormat("Execution time: {0}", this.executionTime);
 			}
-
-			
 			else
 			{
 				LOG.Debug("Execution time: Timed out");

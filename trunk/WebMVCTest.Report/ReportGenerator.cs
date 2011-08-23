@@ -76,7 +76,7 @@ namespace WebMVCTest.Report
 			AddHeaderCell(table, "Project");
 			AddNormalCell(table, project.Name);
 			AddHeaderCell(table, "Base URL");
-			AddNormalCell(table, project.BaseUrl);
+			AddNormalCell(table, project.GetBaseUrl());
 			AddHeaderCell(table, "Description");
 			AddNormalCell(table, project.Description);
 			
