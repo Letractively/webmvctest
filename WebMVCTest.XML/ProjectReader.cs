@@ -45,7 +45,7 @@ namespace WebMVCTest.XML
 						}
 						else if (reader.Name.Equals("baseUrl"))
 						{
-							project.BaseUrl = reader.ReadElementContentAsString();
+							project.SetBaseUrl(reader.ReadElementContentAsString());
 						}
 						else if (reader.Name.Equals("context"))
 						{

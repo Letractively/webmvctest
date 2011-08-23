@@ -4,21 +4,21 @@ namespace WebMVCTest.Model
 {
 	public class Project : IKeyValueContainer
 	{
-		public string Name { get; set; }
+		private List<Authentication> authentications = new List<Authentication>();
+
+        private string baseUrl;
+		
+        private Dictionary<string, string> defaultHeaders = new Dictionary<string, string>();
+		
+        private Context initialContext = new Context();
 
 		public string Description { get; set; }
 
-		public string BaseUrl { get; set; }
-
-		private List<Authentication> authentications = new List<Authentication>();
-
-		private Dictionary<string, string> defaultHeaders = new Dictionary<string, string>();
-
-		public List<TestSet> TestSets { get; set; }
-
 		public List<Function> Functions { get; set; }
 
-		private Context initialContext = new Context();
+		public string Name { get; set; }
+
+		public List<TestSet> TestSets { get; set; }
 
 		public void AddAuthentication(Authentication authentication)
 		{
@@ -35,25 +35,27 @@ namespace WebMVCTest.Model
 			this.initialContext.Add(key, value);
 		}
 
-		public TestSet GetTestSetByName(string name)
+		public Authentication GetAuthenticationByName(string name)
 		{
-			if (this.TestSets != null)
+			foreach (Authentication authentication in this.authentications)
 			{
-				foreach (TestSet testSet in this.TestSets)
+				if (name.Equals(authentication.Name))
 				{
-					if (name.Equals(testSet.Name))
-					{
-						return testSet;
-					}
+					return authentication;
 				}
 			}
 			
 			return null;
 		}
 
-		public string GetSaveName()
+        public string GetBaseUrl()
+        {
+            return this.initialContext.GetResolver().Resolve(this.baseUrl);
+        }
+
+		public Dictionary<string, string> GetDefaultHeaders()
 		{
-			return this.Name.Replace(" ", "_");
+			return this.defaultHeaders;
 		}
 
 		public Function GetFunctionByName(string name)
@@ -83,28 +85,36 @@ namespace WebMVCTest.Model
 			return null;
 		}
 
-		public Dictionary<string, string> GetDefaultHeaders()
+		public Context GetInitialContext()
 		{
-			return this.defaultHeaders;
+			return this.initialContext.Copy();
 		}
 
-		public Authentication GetAuthenticationByName(string name)
+		public string GetSaveName()
 		{
-			foreach (Authentication authentication in this.authentications)
+			return this.Name.Replace(" ", "_");
+		}
+
+		public TestSet GetTestSetByName(string name)
+		{
+			if (this.TestSets != null)
 			{
-				if (name.Equals(authentication.Name))
+				foreach (TestSet testSet in this.TestSets)
 				{
-					return authentication;
+					if (name.Equals(testSet.Name))
+					{
+						return testSet;
+					}
 				}
 			}
 			
 			return null;
 		}
 
-		public Context GetInitialContext()
-		{
-			return this.initialContext.Copy();
-		}
+        public void SetBaseUrl(string url)
+        {
+            this.baseUrl = url;
+        }
 
 		public void SetDefaultHeaders(Dictionary<string, string> headers)
 		{

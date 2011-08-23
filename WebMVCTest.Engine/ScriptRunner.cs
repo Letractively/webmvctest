@@ -100,7 +100,7 @@ namespace WebMVCTest.Engine
 		private void Execute(TestSet testSet)
 		{
 			// Each testset will run in it's own http session
-			HttpSession session = new HttpSession(this.project.BaseUrl, testSet.GetAuthentication());
+			HttpSession session = new HttpSession(this.project.GetBaseUrl(), testSet.GetAuthentication());
 			
 			LOG.InfoFormat("TestSet: {0}", testSet.Name);
 			

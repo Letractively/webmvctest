@@ -18,10 +18,20 @@ namespace WebMVCTest
 			Program program = new Program();
 			
 			Settings settings = new Settings();
-			if (program.ParseCommandLine(settings, args))
-			{
-				program.Run(settings);
-			}
+            if (program.ParseCommandLine(settings, args))
+            {
+                program.Run(settings);
+            }
+            else
+            {
+                Console.WriteLine("Usage: WebMvcText.exe [options] [file]");
+                Console.WriteLine("Options:");
+                Console.WriteLine(" -? (or -h)    - this information");
+                Console.WriteLine(" -l            - write all logging output to a file");
+                Console.WriteLine(" -t [testSet]  - execute a specific testSet");
+                Console.WriteLine(" -d            - show debug information");
+                Console.WriteLine(" -r            - create a PDF report");
+            }
 		}
 
 		private bool ParseCommandLine(Settings settings, string[] args)
@@ -42,7 +52,6 @@ namespace WebMVCTest
 							argumentParsed = true;
 							settings.ShowDebug = true;
 						}
-
 						else if (arg.Equals("-l"))
 						{
 							argumentParsed = true;
@@ -58,8 +67,12 @@ namespace WebMVCTest
 							argumentParsed = true;
 							settings.Report = true;
 						}
-					}
-
+                        else if (arg.Equals("-h") || arg.Equals("-?"))
+                        {
+                            argumentParsed = true;
+                            return false;
+                        }
+                    }
 					else
 					{
 						if (settings.FileName != null)
@@ -68,7 +81,6 @@ namespace WebMVCTest
 							Console.WriteLine("Filename allready specified, only one allowed.");
 							break;
 						}
-
 						else
 						{
 							argumentParsed = true;
