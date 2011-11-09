@@ -85,8 +85,16 @@ namespace WebMVCTest.Engine
 			
 			if (!string.IsNullOrEmpty(this.settings.TestSet))
 			{
-				LOG.InfoFormat("Only executing testset {0}", this.settings.TestSet);
-				Execute(this.project.GetTestSetByName(this.settings.TestSet));
+                if (this.project.HasTestSet(this.settings.TestSet))
+                {
+                    LOG.InfoFormat("Only executing testset '{0}'", this.settings.TestSet);
+                    Execute(this.project.GetTestSetByName(this.settings.TestSet));
+                }
+                else
+                {
+                    LOG.FatalFormat("Project does not containt a testset called '{0}'", this.settings.TestSet);
+                    return;
+                }
 			}
 			else
 			{

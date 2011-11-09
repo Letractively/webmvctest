@@ -95,6 +95,11 @@ namespace WebMVCTest.Model
 			return this.Name.Replace(" ", "_");
 		}
 
+        public bool HasTestSet(string name)
+        {
+            return this.GetTestSetByName(name) != null;
+        }
+
 		public TestSet GetTestSetByName(string name)
 		{
 			if (this.TestSets != null)

@@ -111,10 +111,13 @@ namespace WebMVCTest
 			
 			if (validator.IsValid(settings.FileName))
 			{
-				ProjectReader reader = new ProjectReader(settings.FileName);
-				Project project = reader.ReadProject();
-				reader.Close();
+                Project project = null;
 
+                using (ProjectReader reader = new ProjectReader(settings.FileName)) 
+                {
+                    project = reader.ReadProject();
+                }
+											
 				ScriptRunner.GetInstance().SetSettings(settings);
 				ScriptRunner.GetInstance().Execute(project);
 
