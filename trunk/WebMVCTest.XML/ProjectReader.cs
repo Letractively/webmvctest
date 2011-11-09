@@ -11,7 +11,7 @@ using System.Reflection;
 
 namespace WebMVCTest.XML
 {
-	public class ProjectReader
+	public class ProjectReader : IDisposable
 	{
 		private XmlTextReader reader = null;
 
@@ -613,5 +613,14 @@ namespace WebMVCTest.XML
 			this.reader.Close();
 			this.reader = null;
 		}
-	}
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            this.Close();
+        }
+
+        #endregion
+    }
 }
