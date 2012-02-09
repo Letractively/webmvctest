@@ -143,11 +143,11 @@ namespace WebMVCTest.Report
 
 					if (function.GetResult().Success)
 					{
-						cell.BackgroundColor = new BaseColor(0, 255, 0);
+						cell.BackgroundColor = new Color(0, 255, 0);
 					}
 					else
 					{
-						cell.BackgroundColor = new BaseColor(255, 0, 0);
+						cell.BackgroundColor = new Color(255, 0, 0);
 					}
 					table.AddCell(cell);
 					
@@ -169,7 +169,7 @@ namespace WebMVCTest.Report
 				{
 					Phrase phrase = new Phrase("Skipped", GetNormalFont());
 					PdfPCell cell = new PdfPCell(phrase);
-					cell.BackgroundColor = new BaseColor(150, 150, 150);
+					cell.BackgroundColor = new Color(150, 150, 150);
 					table.AddCell(cell);
 				}
 				

@@ -1,6 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+# SharpDevelop 4.2.0.8528-beta
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMVCTest", "WebMVCTest\WebMVCTest.csproj", "{32FA6825-D98F-4D97-BBA8-DCB0B9B215BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMVCTest.XML", "WebMVCTest.XML\WebMVCTest.XML.csproj", "{600C9081-E594-45D6-AA32-A63FB58FB6B8}"
