@@ -146,6 +146,12 @@
 								<xs:attribute name="value" type="xs:string" use="required" />
 							</xs:complexType>
 						</xs:element>
+						<xs:element minOccurs="0" name="jsonObjectValueEquals">
+							<xs:complexType>
+								<xs:attribute name="column" type="xs:string" use="required" />
+								<xs:attribute name="value" type="xs:string" use="required" />
+							</xs:complexType>
+						</xs:element>
 					</xs:all>
 				</xs:complexType>
 			</xs:element>

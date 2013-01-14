@@ -88,6 +88,7 @@ namespace WebMVCTest.Engine
 				{
 					this.responseText = stream.ReadToEnd();
 					stream.Close();
+					LOG.Debug("ResponseText: " + this.responseText);
 				}
 			}
 			
@@ -103,6 +104,7 @@ namespace WebMVCTest.Engine
 				StreamReader stream = new StreamReader(response.GetResponseStream(), Encoding.UTF8);
 				this.responseText = stream.ReadToEnd();
 				stream.Close();
+				LOG.Debug("ResponseText: " + this.responseText);
 			}
 			
 			SetExecutionTime();
