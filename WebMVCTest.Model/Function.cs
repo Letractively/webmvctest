@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Specialized;
+using log4net;
 using WebMVCTest.Model.Assertion;
 using WebMVCTest.Model.Processor;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ namespace WebMVCTest.Model
 {
 	public class Function : IKeyValueContainer
 	{
+		private static ILog LOG = LogManager.GetLogger(typeof(Function));
+		
 		private string url;
 
 		private int waitInSeconds;
@@ -69,6 +72,7 @@ namespace WebMVCTest.Model
 				foreach (AbstractAssertion assertion in this.assertions)
 				{
 					success = assertion.Assert(response);
+					LOG.DebugFormat("Assert: {0} result: {1}", assertion.GetType().Name, success);
 					
 					if (!success)
 					{

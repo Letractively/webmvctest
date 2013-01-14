@@ -18,9 +18,16 @@ namespace WebMVCTest.Model.Assertion
 		{
 			if (!string.IsNullOrEmpty (response.GetResponseText()))
 			{
-				JObject obj = JObject.Parse (response.GetResponseText());
-
-				return this.value.Equals (obj[column].ToString ());
+				try {
+					JObject obj = JObject.Parse (response.GetResponseText());
+				
+					return this.value.Equals (obj[column].ToString ());
+				}
+				catch (Exception e) 
+				{
+					LOG.Debug("Response can not be parsed as JSON.", e);
+					return false;
+				}
 			}
 			else
 			{
