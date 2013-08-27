@@ -13,7 +13,14 @@ namespace WebMVCTest.Model
 
         public void Add(string key, string value)
         {
-            this.variables.Add(key, value);
+            if (this.variables.ContainsKey(key))
+            {
+                this.variables[key] = value;
+            }
+            else
+            {
+                this.variables.Add(key, value);
+            }
         }
 
         public bool Contains(string key)
